@@ -90,3 +90,68 @@ function wpseo_get_suggest() {
 }
 
 add_action( 'wp_ajax_wpseo_get_suggest', 'wpseo_get_suggest' );
+
+
+/**
+ * Function used to save a redirect from the manage redirect page
+ * 
+ */
+function wpseo_redirect_quicksave() {
+	include_once( WPSEO_PATH . '/admin/class-redirect-table.php' );
+	
+	// nonce check
+	check_ajax_referer( 'save', '_wpnonce-redirect-save' );
+
+	// save 404 redirect
+	if ( $_REQUEST['post_ID'] == '404_redirect' ) {
+		$options = get_option('wpseo');
+		$options['404_redirect'] = $_REQUEST['new_url'];
+		update_option( 'wpseo', $options );
+	
+		$record['id']  	            = '404_redirect';
+		$record['old_url']          = '404 redirect';
+		$record['relative_old_url'] = '404 redirect';
+		$record['new_url']          = $_REQUEST['new_url'];
+
+		$wp_list_table = new WPSEO_Redirect_Table();
+		$wp_list_table->single_row( $record );
+
+		wp_die();	
+	}
+		
+	// set the new redirect value
+	wpseo_set_value( 'redirect', $_POST['new_url'], $_POST['post_ID'] );
+
+	// retrieve the post for the data to be return
+	$query = new WP_Query( array(
+		'p' => $_POST['post_ID'],
+		'meta_key' => '_yoast_wpseo_redirect', 
+		'meta_value' => false, 
+		'meta_compare' => '!=' )
+	);
+
+	$records = array();
+	foreach( $query->get_posts() as $post ) {
+		$record = array();
+
+		$wpurl            = get_bloginfo( 'url' );
+		$permalink        = get_permalink( $post );
+		$relative_old_url = str_replace( $wpurl, '', $permalink );
+		
+		$record['id']               = $post->ID;
+		$record['old_url']          = $permalink;
+		$record['relative_old_url'] = $relative_old_url;
+		$record['new_url']          = wpseo_get_value( 'redirect', $post->ID );
+		
+		$records[] = $record;
+	}
+
+	// return html display as ajax output
+	if ( $records ) {
+		$wp_list_table = new WPSEO_Redirect_Table();
+		$wp_list_table->single_row($records[0]);
+	}
+
+	wp_die();	
+}
+add_action('wp_ajax_redirect_save', 'wpseo_redirect_quicksave');

@@ -23,7 +23,7 @@ class WPSEO_Admin_Pages {
 	/**
 	 * @var array $adminpages Array of admin pages that the plugin uses.
 	 */
-	var $adminpages = array( 'wpseo_dashboard', 'wpseo_rss', 'wpseo_files', 'wpseo_permalinks', 'wpseo_internal-links', 'wpseo_import', 'wpseo_titles', 'wpseo_xml', 'wpseo_social' );
+	var $adminpages = array( 'wpseo_dashboard', 'wpseo_rss', 'wpseo_files', 'wpseo_permalinks', 'wpseo_internal-links', 'wpseo_import', 'wpseo_titles', 'wpseo_xml', 'wpseo_social', 'wpseo_redirect' );
 
 	/**
 	 * Class constructor, which basically only hooks the init function on the init hook
@@ -286,6 +286,10 @@ class WPSEO_Admin_Pages {
 			wp_enqueue_script( 'postbox' );
 			wp_enqueue_script( 'dashboard' );
 			wp_enqueue_script( 'thickbox' );
+		}
+
+		if ( $pagenow == 'admin.php' && isset( $_GET['page'] ) && $_GET['page'] == 'wpseo_redirect' ) {
+			wp_enqueue_script( 'wpseo-redirect-script', WPSEO_URL . 'js/wp-seo-redirect.js', array( 'jquery', 'inline-edit-post' ), WPSEO_VERSION, true );
 		}
 	}
 

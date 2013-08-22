@@ -151,6 +151,7 @@ class WPSEO_Admin {
 		add_submenu_page( 'wpseo_dashboard', __( 'Internal Links', 'wordpress-seo' ), __( 'Internal Links', 'wordpress-seo' ), 'manage_options', 'wpseo_internal-links', array( $this, 'internallinks_page' ) );
 		add_submenu_page( 'wpseo_dashboard', __( 'RSS', 'wordpress-seo' ), __( 'RSS', 'wordpress-seo' ), 'manage_options', 'wpseo_rss', array( $this, 'rss_page' ) );
 		add_submenu_page( 'wpseo_dashboard', __( 'Import & Export', 'wordpress-seo' ), __( 'Import & Export', 'wordpress-seo' ), 'manage_options', 'wpseo_import', array( $this, 'import_page' ) );
+		add_submenu_page( 'wpseo_dashboard', __( 'Redirect', 'wordpress-seo' ), __( 'Redirect', 'wordpress-seo' ), 'manage_options', 'wpseo_redirect', array( $this, 'redirect_page' ) );
 
 		if ( !( defined( 'DISALLOW_FILE_EDIT' ) && DISALLOW_FILE_EDIT ) && !( defined( 'DISALLOW_FILE_MODS' ) && DISALLOW_FILE_MODS ) ) {
 			// Make sure on a multi site install only super admins can edit .htaccess and robots.txt
@@ -227,6 +228,14 @@ class WPSEO_Admin {
 			include( WPSEO_PATH . '/admin/pages/rss.php' );
 	}
 
+	/**
+	 * Loads the table for the manage redirect page.
+	 */
+	function redirect_page() {
+		if ( isset( $_GET['page'] ) && 'wpseo_redirect' == $_GET['page'] )
+			include( WPSEO_PATH . '/admin/pages/redirect.php' );
+	}
+	
 	/**
 	 * Loads the form for the XML Sitemaps page.
 	 */

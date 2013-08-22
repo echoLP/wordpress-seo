@@ -211,3 +211,41 @@ h2 code {
 #pointer-primary {
 	margin: 0 5px 0 0; 
 }
+
+
+/* Manage Redirect Page */
+.inline-edit-row fieldset label span.input-text-wrap {
+    display: block;
+    margin-left: 7em;
+}
+
+label.redirect-editfield {
+	display: block;
+    float: none;
+    margin: 0.2em 0;
+}
+
+label.redirect-editfield span.redirect-label {
+    float: left;
+    width: 6em;
+}
+
+label.redirect-editfield span.input-text-wrap {
+    margin-left: 1em;
+}
+
+label.redirect-editfield input[type="text"] {
+	width: 92%;
+}
+
+#inline-fieldset {
+	margin-bottom: 1em !important;
+}
+
+.submit-footer {
+	margin-top: 0.5em;
+}
+
+.submit-footer .first-button {
+	margin-right: 1em;
+}
